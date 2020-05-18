@@ -24,12 +24,23 @@ let persons = [
     }
 ]
 
+
+
+let numEntries = persons.length
+let date = new Date()
+let message = `<div>Phonebook has info for ${numEntries} people</div>
+	<div>${date}</div>`
+
 app.get('/', (req, res) =>{
 	res.send('<h1>Hello World!</h1>')
 })
 
 app.get('/api/persons', (req,res) =>{
 	res.json(persons)
+})
+
+app.get('/info', (req,res)=>{
+	res.send(message)	
 })
 
 const PORT = 3001

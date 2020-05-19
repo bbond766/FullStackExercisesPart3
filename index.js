@@ -25,7 +25,7 @@ let persons = [
 ]
 
 
-
+let id = 0
 let numEntries = persons.length
 let date = new Date()
 let message = `<div>Phonebook has info for ${numEntries} people</div>
@@ -41,6 +41,16 @@ app.get('/api/persons', (req,res) =>{
 
 app.get('/info', (req,res)=>{
 	res.send(message)	
+})
+
+app.get('/api/persons/:id', (request, response) =>{
+	id = Number(request.params.id)
+	const person = persons.find(person => person.id === id)
+	if(person){
+		response.json(person)
+	} else {
+		response.status(404).end()
+	}
 })
 
 const PORT = 3001

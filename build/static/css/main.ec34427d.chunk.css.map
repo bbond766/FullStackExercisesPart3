@@ -1,0 +1,1 @@
+{"version":3,"sources":["index.css"],"names":[],"mappings":"AAAA,QACC,WAAY,CACZ,kBAAqB,CACrB,cAAe,CACf,kBAAmB,CACnB,iBAAkB,CAClB,YAAa,CACb,kBACD","file":"main.ec34427d.chunk.css","sourcesContent":[".change{\n\tcolor: green;\n\tbackground: lightgrey;\n\tfont-size: 20px;\n\tborder-style: solid;\n\tborder-radius: 5px;\n\tpadding: 10px;\n\tmargin-bottom: 10px;\n}\n"]}

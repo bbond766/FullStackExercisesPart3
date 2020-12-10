@@ -1,15 +1,16 @@
+require('dotenv').config()
 const express = require('express')
 const app = express()
 const morgan = require('morgan')
 const cors = require('cors')
+const Person = require('./models/person')
 
 app.use(express.json())
 app.use(morgan('tiny'))
 app.use(cors())
 app.use(express.static('build'))
 
-
-let persons = [
+/*let persons = [
 	{
       "name": "Arto Hellas",
       "number": "040-123456",
@@ -30,11 +31,11 @@ let persons = [
       "number": "39-23-6423122",
       "id": 4
     }
-]
+]*/
 
 
 let id = 0
-let numEntries = persons.length
+let numEntries = 1//persons.length
 let date = new Date()
 let message = `<div>Phonebook has info for ${numEntries} people</div>
 	<div>${date}</div>`
@@ -43,22 +44,21 @@ app.get('/', (req, res) =>{
 	res.send('<h1>Hello World!</h1>')
 })
 
-app.get('/api/persons', (req,res) =>{
-	res.json(persons)
+app.get('/api/persons', (request,response) =>{
+	Person.find({}).then(person => {
+		response.json(person)
+	})
 })
 
-app.get('/info', (req,res)=>{
-	res.send(message)	
+app.get('/info', (request,response)=>{
+	response.send(message)	
 })
 
 app.get('/api/persons/:id', (request, response) =>{
 	id = Number(request.params.id)
-	const person = persons.find(person => person.id === id)
-	if(person){
+	Person.find({}).then(person => {
 		response.json(person)
-	} else {
-		response.status(404).end()
-	}
+	})
 })
 
 app.delete('/api/persons/:id', (req,res) =>{

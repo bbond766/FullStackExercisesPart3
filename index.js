@@ -10,30 +10,6 @@ app.use(morgan('tiny'))
 app.use(cors())
 app.use(express.static('build'))
 
-/*let persons = [
-	{
-      "name": "Arto Hellas",
-      "number": "040-123456",
-      "id": 1
-    },
-    {
-      "name": "Ada Lovelace",
-      "number": "39-44-5323523",
-      "id": 2
-    },
-    {
-      "name": "Dan Abramov",
-      "number": "12-43-234345",
-      "id": 3
-    },
-    {
-      "name": "Mary Poppendieck",
-      "number": "39-23-6423122",
-      "id": 4
-    }
-]*/
-
-
 let id = 0
 let numEntries = 1//persons.length
 let date = new Date()
@@ -56,9 +32,14 @@ app.get('/info', (request,response)=>{
 
 app.get('/api/persons/:id', (request, response) =>{
 	id = Number(request.params.id)
-	Person.find({}).then(person => {
-		response.json(person)
+	Person.findById(id).then(person => {
+		if(person){
+			response.json(person)
+		} else {
+			response.status(404).end()
+		}
 	})
+	.catch(error => next(error))
 })
 
 app.delete('/api/persons/:id', (req,res) =>{
@@ -68,22 +49,31 @@ app.delete('/api/persons/:id', (req,res) =>{
 })
 
 app.post('/api/persons', (req,res) =>{
-	const person = req.body
-	person.id = Math.round(Math.random()*1000)
+
+	const id = Math.round(Math.random()*1000)
+
+	const person = new Person({
+		name: req.body.name,
+		number: req.body.number,
+		id: id
+	})
+	
 
 	if(!person.name){
 		return res.status(400).json({error: 'Name is missing'})
 	}
-	if(!person.numer){
+	if(!person.number){
 		return res.status(400).json({error: 'Number is missing'})
 	}
-	if(persons.find(persons => persons.name === person.name)){
+	/*if(person.find(persons => persons.name === person.name)){
 		return res.status(400).json({error: 'Name must be unique'})
-	}
+	}*/
 
 	console.log(person)
 
-	res.json(person)
+	person.save().then(savedPerson => {
+		res.json(savedPerson.toJSON())
+	})
 })
 
 const PORT = process.env.PORT || 3002

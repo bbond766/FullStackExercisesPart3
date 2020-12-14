@@ -9,7 +9,6 @@ app.use(express.json())
 app.use(morgan('tiny'))
 app.use(cors())
 app.use(express.static('build'))
-app.use(logger)
 
 let id = 0
 let numEntries = 1//persons.length
@@ -33,7 +32,8 @@ app.get('/info', (request,response)=>{
 
 app.get('/api/persons/:id', (request, response) =>{
 	id = Number(request.params.id)
-	Person.findById(id).then(person => {
+	console.log(id)
+	Person.find({id:id}).then(person => {
 		if(person){
 			response.json(person)
 		} else {

@@ -44,13 +44,24 @@ app.get('/api/persons/:id', (request, response) =>{
 
 app.delete('/api/persons/:id', (req,res) =>{
 	id = Number(req.params.id)
-	persons = persons.filter(person => person.id !== id)
+	Person.deleteOne({id: id}, function(err, docs) {
+		if (err){
+			console.log(err)
+		} else{
+			console.log('Deleted:', docs)
+		}
+	})
 	res.status(204).end()
 })
 
 app.post('/api/persons', (req,res) =>{
-
-	const id = Math.round(Math.random()*1000)
+	var id = 0
+	
+	if(req.body.id){
+		id = req.body.id
+	} else{
+		id = Math.round(Math.random()*1000)
+	}
 
 	const person = new Person({
 		name: req.body.name,

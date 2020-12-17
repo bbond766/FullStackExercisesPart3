@@ -73,14 +73,14 @@ app.post('/api/persons', (req,res) =>{
 	if(!person.number){
 		return res.status(400).json({error: 'Number is missing'})
 	}
-	/*if(person.find(persons => persons.name === person.name)){
-		return res.status(400).json({error: 'Name must be unique'})
-	}*/
 
 	console.log(person)
 
 	person.save().then(savedPerson => {
 		res.json(savedPerson.toJSON())
+	})
+	.catch(error => {
+		res.status(400).json({error: 'Submission in not unique'})
 	})
 })
 
@@ -95,7 +95,9 @@ const errorHandler = (error, request, response, next) => {
   
 	if (error.name === 'CastError') {
 	  return response.status(400).send({ error: 'malformatted id' })
-	} 
+	} else if(error.name === 'ValidationError'){
+		return response.status(400).send({error: 'Validation Error with entry'})
+	}
   
 	next(error)
 }

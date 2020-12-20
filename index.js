@@ -21,7 +21,7 @@ app.get('/', (req, res) =>{
 })
 
 app.get('/api/persons', (request,response) =>{
-	Person.find({}).then(person => { //heroku error cannot read property find of undefined
+	Person.find({}).then(person => {
 		response.json(person)
 	})
 	.catch(error => next(error))

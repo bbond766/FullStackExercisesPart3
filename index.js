@@ -3,7 +3,7 @@ const express = require('express')
 const app = express()
 const morgan = require('morgan')
 const cors = require('cors')
-const Person = require('./models/person').default
+const Person = require('./models/person')
 
 app.use(express.json())
 app.use(morgan('tiny'))
@@ -21,9 +21,8 @@ app.get('/', (req, res) =>{
 })
 
 app.get('/api/persons', (request,response) =>{
-	Person.find({}).then(person => {
+	Person.find({}).then(person => { //heroku error cannot read property find of undefined
 		response.json(person)
-		console.log(person)
 	})
 	.catch(error => next(error))
 })

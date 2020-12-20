@@ -23,6 +23,7 @@ app.get('/', (req, res) =>{
 app.get('/api/persons', (request,response) =>{
 	Person.find({}).then(person => {
 		response.json(person)
+		console.log(person)
 	})
 	.catch(error => next(error))
 })

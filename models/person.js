@@ -1,11 +1,11 @@
-const mongoose = require('mongoose')
-const uniqueValidator = require('mongoose-unique-validator')
+import { connect, Schema, model } from 'mongoose'
+import uniqueValidator from 'mongoose-unique-validator'
 
 const url = process.env.MONGODB_URI
 
 console.log('connecting to', url)
 
-mongoose.connect(url, {useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true})
+connect(url, {useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true})
     .then(result =>{
         console.log('connected to MongoDB')
     })
@@ -13,7 +13,7 @@ mongoose.connect(url, {useNewUrlParser: true, useUnifiedTopology: true, useFindA
         console.log('error connecting to mongoDB:', error.message)
     })
 
-const personSchema = new mongoose.Schema({
+const personSchema = new Schema({
     name: {type: String, required: true, unique: true},
     number: {type: String, required: true},
     id: {type: Number},
@@ -29,4 +29,4 @@ personSchema.set('toJSON', {
 	}
 })
 
-module.exports = mongoose.model('Person', personSchema)
+export default model('Person', personSchema)

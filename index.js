@@ -3,7 +3,7 @@ const express = require('express')
 const app = express()
 const morgan = require('morgan')
 const cors = require('cors')
-const Person = require('./models/person')
+const Person = require('./models/person').default
 
 app.use(express.json())
 app.use(morgan('tiny'))
@@ -24,9 +24,11 @@ app.get('/api/persons', (request,response) =>{
 	Person.find({}).then(person => {
 		response.json(person)
 	})
+	.catch(error => next(error))
 })
 
 app.get('/info', (request,response)=>{
+	//numEntries = Person.estimatedDocumentCount()
 	response.send(message)	
 })
 
